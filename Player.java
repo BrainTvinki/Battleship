@@ -1,0 +1,28 @@
+package battleship;
+
+public class Player {
+    int number;
+    Field fieldOwnShips;
+    Field fieldFoeShips;
+
+    Player (int number){
+        this.number = number;
+    }
+
+    public Field getFieldOwnShips() {
+        return fieldOwnShips;
+    }
+
+    public void setFieldOwnShips(Field fieldOwnShips) {
+        this.fieldOwnShips = fieldOwnShips;
+    }
+
+    public Field getFieldFoeShips() {
+        return fieldFoeShips;
+    }
+
+    public void setFieldFoeShips(Field fieldFoeShips) {
+        this.fieldFoeShips = fieldFoeShips;
+    }
+}
+
