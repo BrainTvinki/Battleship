@@ -7,41 +7,44 @@ class Field {
     public Cell[][] fieldOfCells = new Cell[12][12];
     Ships[] allShips = new Ships[5];
 
-    void initialize(Cell[][] field) {
+    void initialize() {
         // everyCell
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field[0].length ; j++) {
-                field[i][j] = new Cell(new Coordinate((char) ('@' + i),j));
+        for (int i = 0; i < fieldOfCells.length; i++) {
+            for (int j = 0; j < fieldOfCells[0].length ; j++) {
+                fieldOfCells[i][j] = new Cell(new Coordinate((char) ('@' + i),j));
             }
         }
         //the first line
-        field[0][0].setStringRepresentation(" ");
-        for (int i = 1; i < field[0].length - 1; i++) {
-            field[0][i].setStringRepresentation(String.valueOf(i));
-            field[0][i].setStringRepresentationInFog(String.valueOf(i));
+        fieldOfCells[0][0].setStringRepresentation(" ");
+        for (int i = 1; i < fieldOfCells[0].length - 1; i++) {
+            fieldOfCells[0][i].setStringRepresentation(String.valueOf(i));
+            fieldOfCells[0][i].setStringRepresentationInFog(String.valueOf(i));
         }
         // the first column
        // System.out.println();
-        for (int i = 1; i < field.length - 1; i++) {
-            field[i][0].setStringRepresentation(String.valueOf((char) ('@' + i)) );
-            field[i][0].setStringRepresentationInFog(String.valueOf((char) ('@' + i)) );
+        for (int i = 1; i < fieldOfCells.length - 1; i++) {
+            fieldOfCells[i][0].setStringRepresentation(String.valueOf((char) ('@' + i)) );
+            fieldOfCells[i][0].setStringRepresentationInFog(String.valueOf((char) ('@' + i)) );
         }
         // fill the ~ char
-        for (int i = 1; i < field.length - 1; i++) {
-            for (int j = 1; j < field[0].length - 1; j++) {
-                field[i][j].setStringRepresentation("~");
-                field[i][j].setStringRepresentationInFog("~");
+        for (int i = 1; i < fieldOfCells.length - 1; i++) {
+            for (int j = 1; j < fieldOfCells[0].length - 1; j++) {
+                fieldOfCells[i][j].setStringRepresentation("~");
+                fieldOfCells[i][j].setStringRepresentationInFog("~");
             }
         }
     }
 
-    void showTheField(Cell[][] field) {
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field.length; j++) {
-                    System.out.print(field[i][j] + " ");
+    void showTheField() {
+        for (int i = 0; i < fieldOfCells.length -1; i++) {
+            for (int j = 0; j < fieldOfCells.length; j++) {
+                    System.out.print(fieldOfCells[i][j] + " ");
             }
-            System.out.print("\n");
+            //if(i < fieldOfCells.length - 1) {
+                System.out.print("\n");
+           // }
         }
+
     }
 
     void showTheFieldOfCoordintaes(Cell[][] field) {
@@ -53,12 +56,14 @@ class Field {
         }
     }
 
-    void showTheFieldInFog(Cell[][] field) {
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field.length; j++) {
-                System.out.print(field[i][j].stringRepresentationInFog + " ");
+    void showTheFieldInFog() {
+        for (int i = 0; i < fieldOfCells.length - 1; i++) {
+            for (int j = 0; j < fieldOfCells.length; j++) {
+                System.out.print(fieldOfCells[i][j].stringRepresentationInFog + " ");
             }
-            System.out.print("\n");
+           // if(i < fieldOfCells.length - 1) {
+                System.out.print("\n");
+           // }
         }
     }
 

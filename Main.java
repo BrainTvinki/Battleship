@@ -3,71 +3,58 @@ package battleship;
 import java.util.Arrays;
 import java.util.Scanner;
 
+
 import static java.lang.Math.abs;
 
 public class Main {
     static boolean isCoordinatesGot = false;
+    static Player currentPlayer;
 
     public static void main(String[] args) {
+
         Player player1 = new Player(1);
         Player player2 = new Player(2);
+        Gameplay gameplay = new Gameplay();
 
-        Field field = new Field();
-        field.initialize(field.fieldOfCells);
-        field.showTheField(field.fieldOfCells);
-        Coordinate[] shipCoordinates;
+        Scanner scanner = new Scanner(System.in);
+
+
+        System.out.println("Player 1, place your ships on the game field");
+        gameplay.placeShipsBeforeStart(player1);
+        System.out.println("Press Enter and pass the move to another player");
+        System.out.println("...");
+        System.out.println("Player 2, place your ships on the game field");
+        //clearTheScreen(scanner.next().charAt(0));
+        gameplay.placeShipsBeforeStart(player2);
+
+
+
         Coordinate[] whereToShoot = new Coordinate[2];
-        for (int i = 0; i < 5; i++) {
-            while (!isCoordinatesGot) {
-                try {
-                    switch (i){
-                        case 0:
-                            System.out.println("Enter the coordinates of the Aircraft Carrier (5 cells):");
-                            break;
-                        case 1:
-                            System.out.println("Enter the coordinates of the Battleship (4 cells):");
-                            break;
-                        case 2:
-                            System.out.println("Enter the coordinates of the Submarine (3 cells):");
-                            break;
-                        case 3:
-                            System.out.println("Enter the coordinates of the Cruiser (3 cells):");
-                            break;
-                        case 4:
-                            System.out.println("Enter the coordinates of the Destroyer (2 cells):");
-                            break;
-                        default:
-                            System.out.println("Incor input");
-                    }
-                    shipCoordinates = getCoordinate();
-                    System.out.println("Coordinates are got");
-                    shipPlacer(shipCoordinates[0], shipCoordinates[1], field, i);
-                    System.out.println("Ship placed");
-                //System.out.println(shipCoordinates.length);
-                }catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
-                    System.out.println(e);
-                }
-            }
-            field.showTheField(field.fieldOfCells);
-            isCoordinatesGot = false;
-        }
-        System.out.println("The game starts!");
-        field.showTheFieldInFog(field.fieldOfCells);
-        while(true) {
-            while (!isCoordinatesGot) {
-                try {
-                    whereToShoot = getCoordinate();
-                } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
 
-                    System.out.println("Something goes wrong");
-                }
-            }
-            Gameplay.shoot(field, whereToShoot[0]);
-            field.showTheField(field.fieldOfCells);
-            isCoordinatesGot = false;
+        System.out.println("Press Enter and pass the move to another player\n" +
+                "...\n");
+        player1.setFieldFoeShips(player2.getFieldOwnShips());
+        player2.setFieldFoeShips(player1.getFieldOwnShips());
+        while (true) {
+
+        currentPlayer = player1;
+        gameplay.turnForOnePlayer(currentPlayer);
+
+        currentPlayer = player2;
+        gameplay.turnForOnePlayer(currentPlayer);
+
         }
+
     }
 
+    private static void clearTheScreen (char enterCode) {
+        if(enterCode == 10) {
+            for(int clear = 0; clear < 50; clear++)
+            {
+                System.out.println("\n") ;
+            }
+        }
+    }
 
 
     public static Coordinate[] getCoordinate() throws IllegalArgumentException {
@@ -85,7 +72,14 @@ public class Main {
         Coordinate[] coordinates = new Coordinate[allCoordinatesAsStringArray.length];
         for (int i = 0; i < allCoordinatesAsStringArray.length; i++) {
             coordinateAsStringArray = allCoordinatesAsStringArray[i].split("(?<=[A-Z])");
-            letter = coordinateAsStringArray[0].charAt(0);
+
+            try {
+                letter = coordinateAsStringArray[0].charAt(0);
+            } catch (StringIndexOutOfBoundsException e) {
+                System.out.println("Error: Coordinate is incorrect");
+                return null;
+            }
+
             try{
                 if(letter > 'J' || letter < 'A') {
                     throw new IllegalArgumentException("Error: Coordinate is out of field!");
@@ -122,7 +116,7 @@ public class Main {
             }
         }
         isCoordinatesGot = true;
-        System.out.println(Arrays.toString(coordinates));
+        //System.out.println(Arrays.toString(coordinates));
         return coordinates;
     }
 
@@ -132,7 +126,7 @@ public class Main {
             case 0:
                 field.allShips[theOrderOfShips] = new AircraftCarrier();
                // allShips[theOrderOfShips] = ship;
-                System.out.println("ship created");
+                //System.out.println("ship created");
                 break;
             case 1:
                 field.allShips[theOrderOfShips] = new Battleship();
@@ -206,7 +200,7 @@ public class Main {
                         field.allShips[theOrderOfShips].deckArray[i].setCoordinate(field.fieldOfCells[startPos.getyPos() - 64 + i][startPos.getxPos()].getCoordinate());
                         field.fieldOfCells[startPos.getyPos() - 64 + i][startPos.getxPos()].setShip(field.allShips[theOrderOfShips]);
                         field.fieldOfCells[startPos.getyPos() - 64 + i][startPos.getxPos()].setStringRepresentation("O");
-                        System.out.println(field.allShips[theOrderOfShips]);
+                        //System.out.println(field.allShips[theOrderOfShips]);
                     }
                 }
 
@@ -220,14 +214,14 @@ public class Main {
 
                 //code below places the ship
                     for (int i = 0;i <= abs(startPos.getxPos() - finishPos.getxPos());i++) { //for each cell of ship
-                        System.out.printf("it is cell %d %d",startPos.getyPos() - 64,startPos.getxPos() + i);
+                        //System.out.printf("it is cell %d %d",startPos.getyPos() - 64,startPos.getxPos() + i);
                         field.fieldOfCells[startPos.getyPos() - 64][startPos.getxPos() + i].setEmpty(false);
                         field.allShips[theOrderOfShips].deckArray[i].setCoordinate(field.fieldOfCells[startPos.getyPos() - 64][startPos.getxPos() + i].getCoordinate());
 
-                        System.out.println( field.allShips[theOrderOfShips].deckArray[i].getCoordinate());
+                        //System.out.println( field.allShips[theOrderOfShips].deckArray[i].getCoordinate());
                         field.fieldOfCells[startPos.getyPos() - 64][startPos.getxPos() + i].setShip(field.allShips[theOrderOfShips]);
                         field.fieldOfCells[startPos.getyPos() - 64][startPos.getxPos() + i].setStringRepresentation("O");
-                        System.out.println( field.allShips[theOrderOfShips]);
+                        //System.out.println( field.allShips[theOrderOfShips]);
                     }
                 //field.showTheFieldOfCoordintaes(field.fieldOfCells);
 

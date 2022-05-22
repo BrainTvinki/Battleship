@@ -9,7 +9,7 @@ public abstract class Ships {
         for (int i = 0; i < shipLength; i++) {
             deckArray[i] = new Deck();
         }
-        System.out.println("Deck created");
+        //System.out.println("Deck created");
         return deckArray;
     }
 
